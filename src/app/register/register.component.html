@@ -1,0 +1,182 @@
+<div class="card">
+  <header class="card-header text-white bg-info">S'enregister</header>
+  <div class="card-body">
+    <form novalidate (ngSubmit)="saveData(registerForm)" #registerForm="ngForm">
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="firstName" class="form-label">Nom</label>
+          <input
+            [(ngModel)]="user.firstName"
+            #firstNameVar="ngModel"
+            [ngClass]="{
+              'is-invalid': firstNameVar.touched && !firstNameVar.valid
+            }"
+            type="text"
+            class="form-control"
+            id=""
+            name="firstName"
+            required
+            minlength="4"
+            placeholder="Votre Nom"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="firstNameVar.errors?.['required']">
+              Entrez votre Nom
+            </span>
+            <span *ngIf="firstNameVar.errors?.['minlength']">
+              Minimun 4 caractères
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="lastName" class="form-label">Prénoms</label>
+          <input
+            [(ngModel)]="user.lastName"
+            #lastNameVar="ngModel"
+            [ngClass]="{
+              'is-invalid': lastNameVar.touched && !lastNameVar.valid
+            }"
+            type="text"
+            class="form-control"
+            id=""
+            name="lastName"
+            required
+            placeholder="Vos Prénoms"
+            maxlength="20"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="lastNameVar.errors?.['required']">
+              Entrez vos Prénoms
+            </span>
+            <span *ngIf="lastNameVar.errors?.['maxlength']">
+              Maximum 20 caractères
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="email" class="form-label">Email</label>
+          <input
+            [(ngModel)]="user.email"
+            #emailVar="ngModel"
+            [ngClass]="{
+              'is-invalid': emailVar.touched && !lastNameVar.valid
+            }"
+            type="email"
+            class="form-control"
+            id=""
+            name="email"
+            required
+            email
+            placeholder="Votre Email"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="emailVar.errors?.['required']">
+              Entrez votre email
+            </span>
+            <span *ngIf="emailVar.errors?.['email']">
+              Votre email est invalide
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id=""
+              name="sendCatalogId"
+            />
+            <label class="form-check-label" for="sendCatalogId">
+              Oui, je souhaite recevoir de la publicité
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="adressPrincipale" class="form-label"
+            >Adresse principale</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id=""
+            name="adressPrincipale"
+            placeholder="Votre adresse principale"
+            required
+          />
+        </div>
+        <div class="col-md-3">
+          <label for="adressSecondary" class="form-label"
+            >Adresse secondaire</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id=""
+            name="adressSecondary"
+            placeholder="Votre adresse secondaire"
+          />
+        </div>
+
+        <div class="col-md-2">
+          <label for="city" class="form-label">Ville</label>
+          <input
+            type="text"
+            class="form-control"
+            id=""
+            name="city"
+            placeholder="Votre Ville"
+            required
+          />
+        </div>
+
+        <div class="col-md-2">
+          <label for="zip" class="form-label">Code Postal</label>
+          <input
+            type="number"
+            class="form-control"
+            id=""
+            name="zip"
+            placeholder="Votre code postal"
+            required
+          />
+        </div>
+
+        <div class="col-md-2">
+          <label for="department" class="form-label">Département</label>
+          <select class="form-select" name="department" id="" required>
+            <option selected disabled value="">Choisir...</option>
+            <option value="A">Hauts-de-Seine</option>
+            <option value="B">Seine-Saint-Denis</option>
+            <option value="C">Essone</option>
+            <option value="D">Paris</option>
+            <option value="E">Val-de-Marne</option>
+            <option value="F">Seine-et-Marne</option>
+            <option value="G">Yvelines</option>
+            <option value="H">Val-d'Oise</option>
+            <option value="I">Seine-et-Marne</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-right">
+        <button type="submit" class="btn btn-info" type="">Sauvegarder</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr />
+<p>Dirty:{{ registerForm.dirty }}</p>
+<p>Pristine:{{ registerForm.pristine }}</p>
+<p>Invalid:{{ registerForm.invalid }}</p>
+<p>Valeur :</p>
+<pre>{{ registerForm.value | json }}</pre>
