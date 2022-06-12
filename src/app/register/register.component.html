@@ -15,8 +15,6 @@
             type="text"
             class="form-control"
             id="firstName"
-            required
-            minlength="4"
             placeholder="Votre Nom"
           />
           <div class="invalid-feedback">
@@ -41,9 +39,7 @@
             type="text"
             class="form-control"
             id="lastName"
-            required
             placeholder="Vos Prénoms"
-            maxlength="20"
           />
           <div class="invalid-feedback">
             <span *ngIf="registerForm.get('lastName').errors?.['required']">
@@ -69,8 +65,6 @@
             type="email"
             class="form-control"
             id="email"
-            required
-            email
             placeholder="Votre Email"
           />
           <div class="invalid-feedback">
@@ -109,6 +103,75 @@
             </span>
           </div>
         </div> -->
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="email" class="form-label">Téléphone</label>
+          <input
+            [ngClass]="{ 'is-invalid': !registerForm.get('phone').valid }"
+            formControlName="phone"
+            type="tel"
+            class="form-control"
+            id="phoneId"
+            placeholder="Numéro de téléphone"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="registerForm.get('phone').errors?.['required']">
+              Veillez entrer votre numéro de téléphone.
+            </span>
+          </div>
+        </div>
+        <div class="col-md-4 mt-2">
+          <label for="">Recevoir les notifications</label>
+          <div>
+            <div class="form-check form-check-inline">
+              <input
+                formControlName="notification"
+                (click)="setNotificationSetting('email')"
+                class="form-check-input"
+                type="radio"
+                name=""
+                id=""
+                value="email"
+              />
+              <label class="form-check-label" for="inlineRadio1">E-mail</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                formControlName="notification"
+                (click)="setNotificationSetting('text')"
+                class="form-check-input"
+                type="radio"
+                name=""
+                id=""
+                value="text"
+              />
+              <label class="form-check-label" for="inlineRadio2">Texte</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="ratingId" class="form-label">Note</label>
+          <input
+            type="number"
+            class="form-control"
+            id="ratingId"
+            formControlName="rating"
+            [ngClass]="{
+              'is-invalid':
+                (registerForm.get('rating').touched ||
+                  registerForm.get('rating').dirty) &&
+                !registerForm.get('rating').valid
+            }"
+            placeholder="Choisir une note"
+          />
+          <div class="invalid-feedback">
+            <span *ngIf="registerForm.get('rating').errors?.['RangeError']">
+              Noter notre service client sur une échelle de 1 à 5.
+            </span>
+          </div>
+        </div>
       </div>
 
       <div class="row mb-3">

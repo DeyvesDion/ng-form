@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { User } from './user';
 
+
+function ratingRangeValidator(c: AbstractControl): { [key: string]: boolean } | null{
+  // different de null (!!c.value)
+  if (!!c.value && (isNaN(c.value) || c.value < 1 || c.value > 5)) {
+    return {'RangeError': true};
+  }
+  return null
+}
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -19,9 +27,12 @@ public user: User = new User();
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      firstName: [''],
-      lastName: '',
-      email: '',
+      firstName: ['', [Validators.required, Validators.minLength(4)]],
+      lastName: ['', [Validators.required, Validators.maxLength(25)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: '',
+      rating:[null, ratingRangeValidator],
+      notification:'email',
       sendCatalog: false,
     });
   }
@@ -38,6 +49,16 @@ public user: User = new User();
       email: 'jdoe@test.com',
       sendCatalog:'true' 
   })
+}
+  public setNotificationSetting(method: string): void {
+
+    const phoneControl = this.registerForm.get('phone');
+    if (method =='text') {
+      phoneControl.setValidators(Validators.required); 
+    } else {
+      phoneControl.clearValidators();
+    }
+    phoneControl.updateValueAndValidity();
 }
 
 }
