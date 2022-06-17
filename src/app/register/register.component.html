@@ -52,15 +52,16 @@
         </div>
       </div>
 
-      <div class="row mb-3">
+      <div class="row mb-3" formGroupName="emailGroup">
         <div class="col-md-6">
           <label for="email" class="form-label">Email</label>
           <input
             formControlName="email"
             [ngClass]="{
               'is-invalid':
-                registerForm.get('email').touched &&
-                !registerForm.get('email').valid
+                registerForm.get('emailGroup').errors ||
+                (registerForm.get('emailGroup.email').touched &&
+                  !registerForm.get('emailGroup.email').valid)
             }"
             type="email"
             class="form-control"
@@ -68,41 +69,47 @@
             placeholder="Votre Email"
           />
           <div class="invalid-feedback">
-            <span *ngIf="registerForm.get('email').errors?.['required']">
+            <span
+              *ngIf="registerForm.get('emailGroup.email').errors?.['required']"
+            >
               Entrez votre email
             </span>
-            <span *ngIf="registerForm.get('email').errors?.['email']">
+            <span
+              *ngIf="registerForm.get('emailGroup.email').errors?.['email']"
+            >
               Votre email est invalide
             </span>
           </div>
         </div>
 
-        <!-- <div class="col-md-6">
-
-          <label for="email" class="form-label">Vérifier votre email </label>
+        <div class="col-md-6">
+          <label for="confirmEmailId" class="form-label"
+            >Confirmer votre email
+          </label>
           <input
-            [(ngModel)]="user.email"
-            #emailVar="ngModel"
+            formControlName="confirmEmail"
             [ngClass]="{
-              'is-invalid': emailVar.touched && !registerForm.get('lastName').valid
+              'is-invalid':
+                registerForm.get('emailGroup').errors ||
+                ((registerForm.get('emailGroup.confirmEmail').touched ||
+                  registerForm.get('emailGroup.confirmEmail').dirty) &&
+                  !registerForm.get('emailGroup.confirmEmail').valid)
             }"
             type="email"
             class="form-control"
-            id="email"
+            id="confirmEmailId"
             name="email"
-            required
-            email
-            placeholder="Votre Email"
+            placeholder="Confirmer votre email"
           />
           <div class="invalid-feedback">
-            <span *ngIf="emailVar.errors?.['required']">
-              Entrez votre email
+            <span
+              *ngIf="registerForm.get('emailGroup.confirmEmail').errors?.['required']"
+            >
+              Merci de confirmer votre email
             </span>
-            <span *ngIf="emailVar.errors?.['email']">
-              Votre email est invalide
-            </span>
+            <!-- <span> L'email ne correspond pas </span> -->
           </div>
-        </div> -->
+        </div>
       </div>
 
       <div class="row mb-3">

@@ -1,15 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl, ValidatorFn } from '@angular/forms';
 import { User } from './user';
 
 
-function ratingRangeValidator(c: AbstractControl): { [key: string]: boolean } | null{
-  // different de null (!!c.value)
-  if (!!c.value && (isNaN(c.value) || c.value < 1 || c.value > 5)) {
-    return {'RangeError': true};
-  }
-  return null
+function ratingRangeValidator(min:number, max:number):ValidatorFn {
+  return (c: AbstractControl): { [key: string]: boolean } | null => {
+  
+    if (c.value != null && (isNaN(c.value) || c.value < min || c.value > max)) {
+      return { 'RangeError': true };
+    }
+    return null;
+  };
 }
+
+function emailMatcher(c: AbstractControl): { [key: string]: boolean } | null{
+  const emailControl:any = c.get('email');
+  const emailConfirmControl:any = c.get('confirmEmail');
+
+if (emailControl.pristine || emailConfirmControl.pristine) {
+  return null;
+}
+
+  if (emailControl.value===emailConfirmControl.value) {
+    return null;
+  }
+  return {'match': true};
+}
+
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -29,9 +47,15 @@ public user: User = new User();
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(4)]],
       lastName: ['', [Validators.required, Validators.maxLength(25)]],
-      email: ['', [Validators.required, Validators.email]],
+
+      // Email formeGroup(email & confirmEmail)
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        confirmEmail:['', Validators.required],
+      },{Validators:"emailMatcher"}),
+      // End Email FormGroup
       phone: '',
-      rating:[null, ratingRangeValidator],
+      rating:[null, ratingRangeValidator(1, 5)],
       notification:'email',
       sendCatalog: false,
     });
@@ -47,6 +71,9 @@ public user: User = new User();
       firstName: ' Doe B',
       lastName: 'John',
       email: 'jdoe@test.com',
+      phone: '123',
+      rating:'3',
+      notification:'email',
       sendCatalog:'true' 
   })
 }
